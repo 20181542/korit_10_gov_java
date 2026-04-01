@@ -15,6 +15,7 @@ public class Array05 {
                 results[i][j] = num1 * num2;
             }
         }
+
         for (int i = 0; i < results.length; i++) {
             System.out.print("[ ");
             for (int j = 0; j < results[i].length; j++) {
