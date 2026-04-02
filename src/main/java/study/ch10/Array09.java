@@ -38,6 +38,7 @@ public class Array09 {
                 foundStudent = students[i];
                 break;
             }
+
         }
         if (foundStudent == null) {
             System.out.println("해당 이름의 학생이 존재하지 않습니다.");
