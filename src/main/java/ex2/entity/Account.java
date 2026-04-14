@@ -12,6 +12,9 @@ public class Account {
     private String owner;
     private int balance;
 
+    public Account(int id, String accountNo, String owner, String balance) {
+    }
+
     public void update(Account account) {
         this.accountNo = account.accountNo;
         this.owner= account.owner;

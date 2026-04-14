@@ -5,6 +5,6 @@ import java.util.Optional;
 public class Optional01 {
     public static void main(String[] args) {
         // Optional 생성
-        Optional<String> name =
+        Optional<String> name ;
     }
 }
