@@ -5,11 +5,10 @@ import ex2.entity.Account;
 import ex2.router.RouterPath;
 import ex2.router.Routes;
 import ex2.util.Input;
+import ex2.view.component.Table;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 
 public class AccountView implements View{
@@ -68,26 +67,19 @@ public class AccountView implements View{
         Map<String, String> props = new HashMap<>();
         props.put("title", "계좌 목록");
 
-        int maxOfAccountNoLengtth = accountList.stream()
-                .map(account -> account.getAccountNo().length())
-                .max(Comparator.comparingInt(prev -> prev))
-                .get();
+        List<List<Object>> rows = accountList.stream().map(account -> {
+            List<Object> fileds = new ArrayList<>();
+            Field[] filedArray = account.getClass().getDeclaredFields();
+            for (Field filed : filedArray) {
+                try {
+                    filed.setAccessible(true);
+                    fileds.add(filed.get(account));
+                } catch (IllegalAccessException e) {}
+            }
+                return fileds;
+        } ).toList();
+        props.put("body", new Table(List.of("ID", "AccountNo", "Owner", "Balance"),rows).getTable());
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("| ID |");
-        for (int i = 0; i < (maxOfAccountNoLengtth - "계좌번호".length()) / 2; i++){
-            stringBuilder.append(" ");
-        }
-        stringBuilder.append("계좌번호");
-        for (int i = 0; i < (maxOfAccountNoLengtth - "계좌번호".length()) / 2; i++){
-            stringBuilder.append(" ");
-        }
-        stringBuilder.append("| 예금주 |\n");
-
-        accountList.forEach(account -> {
-            stringBuilder.append(String.format("| %d | %s | %s |", account.getId(), account.getAccountNo(), account.getOwner()));
-        });
-        props.put("body", stringBuilder.toString());
         basicLayout(props);
     }
 
